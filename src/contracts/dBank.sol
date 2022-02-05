@@ -6,14 +6,18 @@ import "./Token.sol";
 contract dBank {
 
   //assign Token contract to variable
+  Token private token;
 
   //add mappings
+  mapping(address => uint) public etherBalanceOf;
+  mapping(address => uint) public depositStart;
 
   //add events
 
   //pass as constructor argument deployed Token contract
-  constructor() public {
+  constructor(Token _token) public {
     //assign token deployed contract to variable
+    token = _token;
   }
 
   function deposit() payable public {
@@ -21,7 +25,10 @@ contract dBank {
     //check if msg.value is >= than 0.01 ETH
 
     //increase msg.sender ether deposit balance
+    etherBalanceOf[msg.sender] = etherBalanceOf[msg.sender] + msg.value;
+
     //start msg.sender hodling time
+    depositStart[msg.sender] = depositStart[msg.sender] +block.timestamp;
 
     //set msg.sender deposit status to true
     //emit Deposit event
